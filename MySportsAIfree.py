@@ -3,7 +3,7 @@ import pandas as pd
 #import numpy as np
 import pickle
 
-from image_loader import render_image
+#from image_loader import render_image
 
 from sklearn.ensemble import GradientBoostingClassifier
 
