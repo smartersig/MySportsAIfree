@@ -3,6 +3,8 @@ import pandas as pd
 #import numpy as np
 import pickle
 
+from image_loader import render_image
+
 from sklearn.ensemble import GradientBoostingClassifier
 
 def createCols ():
@@ -35,17 +37,16 @@ def predModel():
       for col in decs.columns:
         fileName = fileName + col[0:2]
       fileName = fileName + '.sav'
+      print ('filename ',fileName)
 
-      try:
-        with open(fileName, "rb") as f:
-          m = pickle.load(f)
-          for col in cols:
-            decs[col] = decs[col].fillna(m.repNaNs[col])
-      except Exception as e:
-        with inputs:
-          with rescol:
-            st.write(e)
+      #try:
+      with open(fileName, "rb") as f:
+        m = pickle.load(f)
+        for col in cols:
+          decs[col] = decs[col].fillna(m.repNaNs[col])
+      #except Exception as e:
         #print ('EXCEPTION ',e)
+
       preds = m.predict_proba(decs)
       preds = preds[:,1:]
       #preds = np.around(preds,decimals=3)
@@ -57,7 +58,9 @@ def predModel():
         with rescol:
           st.dataframe(ratings, hide_index=True)
     except Exception as e:
-      print ('no preds ', e)
+      with inputs:
+        with rescol:
+          st.write ('Error No Predictors ? ')
 
 #########################################
 
@@ -72,15 +75,16 @@ header = st.container()
 inputs = st.container()
 
 with header:
+  render_image("MLImage5.png")
   st.title('MySportsAILite')
 
 with inputs:
-  inputcol, rescol = st.columns([2, 3])
+  inputcol, rescol = st.columns([1, 1])
   with rescol:
     line = 'Ratings ' + trackTime
-    st.header(line)
+    st.subheader(line)
   with inputcol:
-    st.header('Choose Inputs')
+    st.subheader('Choose Inputs')
     cl = st.checkbox('Class Move')
     da = st.checkbox('Days Since Last Run')
     tr = st.checkbox('Trainer Strike Rate')
@@ -99,3 +103,5 @@ with inputs:
   with inputcol:
     if st.button("Predict"):
       predModel()
+    st.write('MySportsAI has over 90 predictors to choose from www.smartersig.com/mysportsai.php')
+    #st.write('http://www.http://www.smartersig.com/mysportsai.php')
