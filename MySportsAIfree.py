@@ -31,7 +31,7 @@ def predModel():
 
     try:
 
-      fileName = "models/"
+      fileName = ".models/"
       for col in decs.columns:
         fileName = fileName + col[0:2]
       fileName = fileName + '.sav'
