@@ -46,7 +46,9 @@ def predModel():
           with rescol:
             st.write(e)
         #print ('EXCEPTION ',e)
-
+      with inputs:
+          with rescol:
+            st.write('ok')
       preds = m.predict_proba(decs)
       preds = preds[:,1:]
       #preds = np.around(preds,decimals=3)
