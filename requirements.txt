@@ -2,4 +2,4 @@
 pandas
 streamlit
 scikit-learn
-pickle
+pickle==4.0
