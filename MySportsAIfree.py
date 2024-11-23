@@ -35,7 +35,9 @@ def predModel():
       for col in decs.columns:
         fileName = fileName + col[0:2]
       fileName = fileName + '.sav'
-      print ('filename ',fileName)
+      with inputs:
+        with rescol:
+          st.write (fileName)
 
       try:
         with open(fileName, "rb") as f:
@@ -43,7 +45,10 @@ def predModel():
           for col in cols:
             decs[col] = decs[col].fillna(m.repNaNs[col])
       except Exception as e:
-        print ('EXCEPTION ',e)
+        with inputs:
+        with rescol:
+          st.write (e)
+        #print ('EXCEPTION ',e)
 
       preds = m.predict_proba(decs)
       preds = preds[:,1:]
