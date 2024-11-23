@@ -46,8 +46,8 @@ def predModel():
             decs[col] = decs[col].fillna(m.repNaNs[col])
       except Exception as e:
         with inputs:
-        with rescol:
-          st.write (e)
+          with rescol:
+            st.write (e)
         #print ('EXCEPTION ',e)
 
       preds = m.predict_proba(decs)
