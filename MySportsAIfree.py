@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-import numpy as np
+#import numpy as np
 import pickle
 
 from sklearn.ensemble import GradientBoostingClassifier
@@ -47,7 +47,7 @@ def predModel():
 
       preds = m.predict_proba(decs)
       preds = preds[:,1:]
-      preds = np.around(preds,decimals=3)
+      #preds = np.around(preds,decimals=3)
       ratings = pd.DataFrame()
       ratings['Horse'] = horses
       ratings['Rating'] = preds * 100
