@@ -75,7 +75,8 @@ header = st.container()
 inputs = st.container()
 
 with header:
-  render_image("MLImage5.png")
+  #render_image("MLImage5.png")
+  st.image('MLImage5.png')
   st.title('MySportsAILite')
 
 with inputs:
