@@ -1,4 +1,5 @@
 numpy
 pandas
-streamlit
 scikit-learn
+streamlit
+git+https://github.com/gatagat/lap@new-packaging
