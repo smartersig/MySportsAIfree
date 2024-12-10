@@ -3,7 +3,7 @@ import pandas as pd
 #import numpy as np
 import pickle
 
-#from image_loader import render_image
+from image_loader import render_image
 
 from sklearn.ensemble import GradientBoostingClassifier
 
@@ -60,7 +60,7 @@ def predModel():
     except Exception as e:
       with inputs:
         with rescol:
-          st.write ('Error No Predictors ? ')
+          st.write ('Error No Predictors ? ', e)
 
 #########################################
 
@@ -75,8 +75,7 @@ header = st.container()
 inputs = st.container()
 
 with header:
-  #render_image("MLImage5.png")
-  st.image('MLImage5.png')
+  render_image("MLImage5.png")
   st.title('MySportsAILite')
 
 with inputs:
@@ -105,4 +104,4 @@ with inputs:
     if st.button("Predict"):
       predModel()
     st.write('MySportsAI has over 90 predictors to choose from www.smartersig.com/mysportsai.php')
-    #st.write('http://www.http://www.smartersig.com/mysportsai.php')
+
