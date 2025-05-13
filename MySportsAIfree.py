@@ -76,8 +76,8 @@ my_list = list(cr)
 if len(my_list) == 0:
   st.write('No races today')
 else:
-  decs = pd.DataFrame(my_list) #, index=None)
-
+  header = my_list[0]
+  decs = pd.DataFrame(my_list[1:], columns=header)
   trackTime = decs.iloc[0]['trackTimeDate']
   tt = trackTime.split('_')
   trackTime = tt[0][0:4] + ' ' + tt[1]
