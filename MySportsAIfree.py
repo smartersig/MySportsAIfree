@@ -3,6 +3,7 @@ import pandas as pd
 #import numpy as np
 import pickle
 import requests
+import csv
 
 from image_loader import render_image
 
@@ -67,7 +68,7 @@ def predModel():
 
 #decs = pd.read_csv('http://www.smartersig.com/mysportsaisample.csv')
 
-response = requests.get('http://www.smartersig.com/utils/mysportsaisamplepay.csv', auth=(st.secrets['siguser'], st.secrets['sigpassw']), verify=False)
+response = requests.get('http://www.smartersig.com/utils/mysportsaisample.csv', auth=(st.secrets['siguser'], st.secrets['sigpassw']), verify=False)
 decoded_content = response.content.decode('utf-8')
 cr = csv.reader(decoded_content.splitlines(), delimiter=',')
 my_list = list(cr)
