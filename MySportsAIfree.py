@@ -64,44 +64,54 @@ def predModel():
 
 #########################################
 
-decs = pd.read_csv('http://www.smartersig.com/mysportsaisample.csv')
+#decs = pd.read_csv('http://www.smartersig.com/mysportsaisample.csv')
 
-trackTime = decs.iloc[0]['trackTimeDate']
-tt = trackTime.split('_')
-trackTime = tt[0][0:4] + ' ' + tt[1]
-horses = decs['horse']
+response = requests.get('http://www.smartersig.com/utils/mysportsaisamplepay.csv', auth=(st.secrets['siguser'], st.secrets['sigpassw']), verify=False)
+decoded_content = response.content.decode('utf-8')
+cr = csv.reader(decoded_content.splitlines(), delimiter=',')
+my_list = list(cr)
 
-header = st.container()
-inputs = st.container()
+if len(my_list) == 0:
+  st.write('No races today')
+else:
+  decs = pd.DataFrame(my_list) #, index=None)
 
-with header:
-  render_image("MLImage5.png")
-  st.title('MySportsAILite')
+  trackTime = decs.iloc[0]['trackTimeDate']
+  tt = trackTime.split('_')
+  trackTime = tt[0][0:4] + ' ' + tt[1]
+  horses = decs['horse']
 
-with inputs:
-  inputcol, rescol = st.columns([1, 1])
-  with rescol:
-    line = 'Ratings ' + trackTime
-    st.subheader(line)
-  with inputcol:
-    st.subheader('Choose Inputs')
-    cl = st.checkbox('Class Move')
-    da = st.checkbox('Days Since Last Run')
-    tr = st.checkbox('Trainer Strike Rate')
-    jo = st.checkbox('Jockey Strike Rate')
-    si = st.checkbox('Sire Strike Rate')
-    pa = st.checkbox('Pace Figure')
+  header = st.container()
+  inputs = st.container()
+
+  with header:
+    render_image("MLImage5.png")
+    st.title('MySportsAILite')
+
+  with inputs:
+    inputcol, rescol = st.columns([1, 1])
+    with rescol:
+      line = 'Ratings ' + trackTime
+      st.subheader(line)
+    with inputcol:
+      st.subheader('Choose Inputs')
+      cl = st.checkbox('Class Move')
+      da = st.checkbox('Days Since Last Run')
+      tr = st.checkbox('Trainer Strike Rate')
+      jo = st.checkbox('Jockey Strike Rate')
+      si = st.checkbox('Sire Strike Rate')
+      pa = st.checkbox('Pace Figure')
     
-    cols = createCols()
+      cols = createCols()
 
-try:
-  decs = decs[cols]
-except Exception as e:
-  print ('error ',e)
+  try:
+    decs = decs[cols]
+  except Exception as e:
+    print ('error ',e)
 
-with inputs:
-  with inputcol:
-    if st.button("Predict"):
-      predModel()
-    st.write('MySportsAI has over 90 predictors to choose from www.smartersig.com/mysportsai.php')
+  with inputs:
+    with inputcol:
+      if st.button("Predict"):
+        predModel()
+      st.write('MySportsAI has over 90 predictors to choose from www.smartersig.com/mysportsai.php')
 
