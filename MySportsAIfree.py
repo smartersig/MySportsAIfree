@@ -39,12 +39,12 @@ def predModel():
       for col in decs.columns:
         fileName = fileName + col[0:2]
       fileName = fileName + '.sav'
-      print ('filename ',fileName)
 
       #try:
       with open(fileName, "rb") as f:
         m = pickle.load(f)
         for col in cols:
+          decs[col] = pd.to_numeric(decs[col], errors='coerce') # convert from string to numeric or NaN
           decs[col] = decs[col].fillna(m.repNaNs[col])
       #except Exception as e:
         #print ('EXCEPTION ',e)
@@ -66,12 +66,14 @@ def predModel():
 
 #########################################
 
-#decs = pd.read_csv('http://www.smartersig.com/mysportsaisample.csv')
+#decs = pd.read_csv('http://www.smartersig.com/utils/mysportsaisample.csv')
 
 response = requests.get('http://www.smartersig.com/utils/mysportsaisample.csv', auth=(st.secrets['siguser'], st.secrets['sigpassw']), verify=False)
 decoded_content = response.content.decode('utf-8')
 cr = csv.reader(decoded_content.splitlines(), delimiter=',')
 my_list = list(cr)
+
+## the above loads as strings ##
 
 if len(my_list) == 0:
   st.write('No races today')
