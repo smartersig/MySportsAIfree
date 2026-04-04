@@ -81,7 +81,7 @@ def predModel():
 ## the above loads as strings ##
 
 def load_data():
-    url = "http://www.smartersig.com/mysportsaisample.csv"   # Use the protected URL if needed
+    url = "http://www.smartersig.com/utils/mysportsaisample.csv"   # Use the protected URL if needed
     
     try:
         response = requests.get(
