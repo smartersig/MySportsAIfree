@@ -66,23 +66,23 @@ def predModel():
 
 #########################################
 
-#decs = pd.read_csv('http://www.smartersig.com/utils/mysportsaisample.csv')
-requests.packages.urllib3.disable_warnings()
+decs = pd.read_csv('http://www.smartersig.com/mysportsaisample.csv')
+#requests.packages.urllib3.disable_warnings()
 
-response = requests.get('http://www.smartersig.com/utils/mysportsaisample.csv', auth=(st.secrets['siguser'], st.secrets['sigpassw']), verify=False)
-decoded_content = response.content.decode('utf-8')
-cr = csv.reader(decoded_content.splitlines(), delimiter=',')
-my_list = list(cr)
+#response = requests.get('http://www.smartersig.com/utils/mysportsaisample.csv', auth=(st.secrets['siguser'], #st.secrets['sigpassw']), verify=False)
+#decoded_content = response.content.decode('utf-8')
+#cr = csv.reader(decoded_content.splitlines(), delimiter=',')
+#my_list = list(cr)
 
-print ('Debugging')
-st.write(my_list)
+#print ('Debugging')
+#st.write(my_list)
 ## the above loads as strings ##
 
-if len(my_list) == 0:
+if len(decs) == 0:
   st.write('No races today')
 else:
-  header = my_list[0]
-  decs = pd.DataFrame(my_list[1:], columns=header)
+  #header = my_list[0]
+  #decs = pd.DataFrame(my_list[1:], columns=header)
   trackTime = decs.iloc[0]['trackTimeDate']
   tt = trackTime.split('_')
   trackTime = tt[0][0:4] + ' ' + tt[1]
