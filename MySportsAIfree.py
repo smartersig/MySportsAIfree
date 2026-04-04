@@ -5,7 +5,8 @@ import pickle
 import requests
 import csv
 from io import StringIO
-
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
 
 from image_loader import render_image
 
@@ -80,28 +81,38 @@ def predModel():
 #st.write(my_list)
 ## the above loads as strings ##
 
+
+
 def load_data():
     url = "http://www.smartersig.com/utils/mysportsaisample.csv"
     
-    # Make the request look more like a real browser
+    # Make requests more resilient
+    session = requests.Session()
+    retry_strategy = Retry(
+        total=3,
+        backoff_factor=1,
+        status_forcelist=[429, 500, 502, 503, 504],
+    )
+    adapter = HTTPAdapter(max_retries=retry_strategy)
+    session.mount("http://", adapter)
+    session.mount("https://", adapter)
+
     headers = {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36",
-        "Accept": "text/csv, text/plain, */*",
+        "Accept": "text/csv, */*",
         "Accept-Language": "en-US,en;q=0.9",
-        "Referer": "http://www.smartersig.com/",
-        "Connection": "keep-alive"
     }
-    
+
     try:
-        response = requests.get(
+        response = session.get(
             url,
             auth=(st.secrets["siguser"], st.secrets["sigpassw"]),
             headers=headers,
-            verify=False,      # Keep only if necessary
-            timeout=20
+            verify=False,           # Only if needed
+            timeout=30              # Increased timeout
         )
         
-        st.write(f"Debug: Status code = {response.status_code}")   # Temporary debug
+        st.write(f"✅ Debug: Status code received = {response.status_code}")  # Temporary debug line
         
         response.raise_for_status()
         
@@ -110,20 +121,27 @@ def load_data():
             on_bad_lines='skip',
             dtype=str
         )
-        
         return decs
+
+    except requests.exceptions.Timeout:
+        st.error("⏳ Connection timed out. The SmarterSig server is not responding quickly enough from Streamlit Cloud.")
+        st.info("This is a common issue with this hosting provider. Try again in a few minutes.")
+        return pd.DataFrame()
+        
+    except requests.exceptions.ConnectionError:
+        st.error("🌐 Could not connect to SmarterSig server (ConnectionError).")
+        st.info("Possible causes: server downtime, firewall blocking cloud IPs, or network issue.")
+        return pd.DataFrame()
         
     except requests.exceptions.HTTPError as e:
         if response.status_code == 403:
-            st.error("403 Forbidden: The server is blocking requests from Streamlit Cloud.")
-            st.error("This is usually due to IP blocking or missing browser-like headers.")
-            # Show first part of response for debugging
-            st.write("Response content preview:", response.text[:800])
+            st.error("🚫 403 Forbidden – Server is blocking access from Streamlit Cloud.")
         else:
             st.error(f"HTTP Error: {e}")
         return pd.DataFrame()
+        
     except Exception as e:
-        st.error(f"Unexpected error: {e}")
+        st.error(f"Unexpected error: {str(e)}")
         return pd.DataFrame()
 
 # Call it
