@@ -74,8 +74,7 @@ cr = csv.reader(decoded_content.splitlines(), delimiter=',')
 my_list = list(cr)
 
 print ('Debugging')
-print (my_list)
-
+st.write(my_list)
 ## the above loads as strings ##
 
 if len(my_list) == 0:
