@@ -4,6 +4,8 @@ import pandas as pd
 import pickle
 import requests
 import csv
+from io import StringIO
+
 
 from image_loader import render_image
 
@@ -66,7 +68,7 @@ def predModel():
 
 #########################################
 
-decs = pd.read_csv('http://www.smartersig.com/mysportsaisample.csv')
+#decs = pd.read_csv('http://www.smartersig.com/mysportsaisample.csv')
 #requests.packages.urllib3.disable_warnings()
 
 #response = requests.get('http://www.smartersig.com/utils/mysportsaisample.csv', auth=(st.secrets['siguser'], #st.secrets['sigpassw']), verify=False)
@@ -77,6 +79,38 @@ decs = pd.read_csv('http://www.smartersig.com/mysportsaisample.csv')
 #print ('Debugging')
 #st.write(my_list)
 ## the above loads as strings ##
+
+def load_data():
+    url = "http://www.smartersig.com/mysportsaisample.csv"   # Use the protected URL if needed
+    
+    try:
+        response = requests.get(
+            url,
+            auth=(st.secrets["siguser"], st.secrets["sigpassw"]),
+            verify=False,      # Remove or set to True in production if possible
+            timeout=20
+        )
+        response.raise_for_status()  # Will raise if not successful (e.g. 401, 404)
+        
+        # Parse the CSV safely
+        decs = pd.read_csv(
+            StringIO(response.text),
+            on_bad_lines='skip',   # Skip any problematic rows
+            dtype=str              # Read as strings to avoid type inference issues
+        )
+        return decs
+        
+    except requests.exceptions.RequestException as e:
+        st.error(f"Failed to fetch data from server: {str(e)}")
+        if "401" in str(e) or "Unauthorized" in str(e):
+            st.error("Authentication failed – check your secrets (siguser / sigpassw)")
+        return pd.DataFrame()
+    except Exception as e:
+        st.error(f"Error parsing CSV: {str(e)}")
+        return pd.DataFrame()
+
+# Call it
+decs = load_data()
 
 if len(decs) == 0:
   st.write('No races today')
