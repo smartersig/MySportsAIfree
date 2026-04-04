@@ -81,32 +81,49 @@ def predModel():
 ## the above loads as strings ##
 
 def load_data():
-    url = "http://www.smartersig.com/utils/mysportsaisample.csv"   # Use the protected URL if needed
+    url = "http://www.smartersig.com/utils/mysportsaisample.csv"
+    
+    # Make the request look more like a real browser
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36",
+        "Accept": "text/csv, text/plain, */*",
+        "Accept-Language": "en-US,en;q=0.9",
+        "Referer": "http://www.smartersig.com/",
+        "Connection": "keep-alive"
+    }
     
     try:
         response = requests.get(
             url,
             auth=(st.secrets["siguser"], st.secrets["sigpassw"]),
-            verify=False,      # Remove or set to True in production if possible
+            headers=headers,
+            verify=False,      # Keep only if necessary
             timeout=20
         )
-        response.raise_for_status()  # Will raise if not successful (e.g. 401, 404)
         
-        # Parse the CSV safely
+        st.write(f"Debug: Status code = {response.status_code}")   # Temporary debug
+        
+        response.raise_for_status()
+        
         decs = pd.read_csv(
             StringIO(response.text),
-            on_bad_lines='skip',   # Skip any problematic rows
-            dtype=str              # Read as strings to avoid type inference issues
+            on_bad_lines='skip',
+            dtype=str
         )
+        
         return decs
         
-    except requests.exceptions.RequestException as e:
-        st.error(f"Failed to fetch data from server: {str(e)}")
-        if "401" in str(e) or "Unauthorized" in str(e):
-            st.error("Authentication failed – check your secrets (siguser / sigpassw)")
+    except requests.exceptions.HTTPError as e:
+        if response.status_code == 403:
+            st.error("403 Forbidden: The server is blocking requests from Streamlit Cloud.")
+            st.error("This is usually due to IP blocking or missing browser-like headers.")
+            # Show first part of response for debugging
+            st.write("Response content preview:", response.text[:800])
+        else:
+            st.error(f"HTTP Error: {e}")
         return pd.DataFrame()
     except Exception as e:
-        st.error(f"Error parsing CSV: {str(e)}")
+        st.error(f"Unexpected error: {e}")
         return pd.DataFrame()
 
 # Call it
