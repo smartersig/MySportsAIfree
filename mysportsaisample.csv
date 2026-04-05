@@ -1,9 +1,9 @@
-raceId,trackTimeDate,raceType,track,horse,daysLto,TRinrace,Jockinrace,Sireinrace,paceFig
-10,Southwell_14:31_2026-04-05,Handicap,SouthwellAW,Wetsand (IRE),21.0,1.0,0.77,0.71,1.8
-10,Southwell_14:31_2026-04-05,Handicap,SouthwellAW,Just A Girl,155.0,0.78,0.79,0.53,1.0
-10,Southwell_14:31_2026-04-05,Handicap,SouthwellAW,Colori Forever,162.0,0.79,0.98,0.74,3.0
-10,Southwell_14:31_2026-04-05,Handicap,SouthwellAW,Gold Queen Kindly (IRE),37.0,0.86,0.86,1.0,1.8
-10,Southwell_14:31_2026-04-05,Handicap,SouthwellAW,Loblolly (IRE),192.0,0.75,1.0,0.83,1.8
-10,Southwell_14:31_2026-04-05,Handicap,SouthwellAW,Come On Eibhlin (IRE),163.0,0.73,0.77,0.83,1.0
-10,Southwell_14:31_2026-04-05,Handicap,SouthwellAW,French Affair (IRE),18.0,0.82,0.84,0.82,1.0
-10,Southwell_14:31_2026-04-05,Handicap,SouthwellAW,Henry Halflight (IRE),24.0,0.4,0.74,0.67,1.8
+raceId,trackTimeDate,raceType,track,horse,classMove,daysLto,TRinrace,Jockinrace,Sireinrace,paceFig
+10,Southwell_14:31_2026-04-05,Handicap,SouthwellAW,Wetsand (IRE),3.0,21.0,1.0,0.77,0.71,1.8
+10,Southwell_14:31_2026-04-05,Handicap,SouthwellAW,Just A Girl,3.0,155.0,0.78,0.79,0.53,1.0
+10,Southwell_14:31_2026-04-05,Handicap,SouthwellAW,Colori Forever,1.0,162.0,0.79,0.98,0.74,3.0
+10,Southwell_14:31_2026-04-05,Handicap,SouthwellAW,Gold Queen Kindly (IRE),2.0,37.0,0.86,0.86,1.0,1.8
+10,Southwell_14:31_2026-04-05,Handicap,SouthwellAW,Loblolly (IRE),0.0,192.0,0.75,1.0,0.83,1.8
+10,Southwell_14:31_2026-04-05,Handicap,SouthwellAW,Come On Eibhlin (IRE),0.0,163.0,0.73,0.77,0.83,1.0
+10,Southwell_14:31_2026-04-05,Handicap,SouthwellAW,French Affair (IRE),-1.0,18.0,0.82,0.84,0.82,1.0
+10,Southwell_14:31_2026-04-05,Handicap,SouthwellAW,Henry Halflight (IRE),0.0,24.0,0.4,0.74,0.67,1.8
