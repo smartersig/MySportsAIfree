@@ -84,7 +84,7 @@ def predModel():
 
 
 def load_data():
-    url = "http://www.smartersig.com/utils/mysportsaisample.csv"
+    url = "https://github.com/smartersig/MySportsAIfree/blob/main/mysportsaisample.csv"
     
     # Make requests more resilient
     session = requests.Session()
@@ -145,7 +145,10 @@ def load_data():
         return pd.DataFrame()
 
 # Call it
-decs = load_data()
+#decs = load_data()
+
+decs = pd.read_csv('https://raw.githubusercontent.com/smartersig/MySportsAIfree/refs/heads/main/mysportsaisample.csv')
+print (decs.head())
 
 if len(decs) == 0:
   st.write('No races today')
